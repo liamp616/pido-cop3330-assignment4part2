@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class ListManager {
+    main()
+    start()
+}
+
+class ListManagerController {
+    ObservableList<Item>
+
+    addList()
+    removeList()
+    handleRightClick()
+    exportList()
+    exportAllLists()
+    importList()
+    importAllLists()
+    renameList()
+    addItem()
+    removeItem()
+    editDueDate()
+    editDesc()
+    markComplete()
+    displayIncomplete()
+    displayComplete()
+}
+
+
+class Item {
+    task: String
+    dueDate: String
+    desc: String
+    complete: boolean
+}
+
+class List {
+    title: String
+    list: List<Item>
+}
+
+javafx.Application <|-- ListManager
+
+ListManager - ListManagerController
+ListManagerController *--> List
+
+List *-> Item
+
+@enduml
