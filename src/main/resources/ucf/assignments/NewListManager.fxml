@@ -1,41 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<SplitPane dividerPositions="0.5, 0.5" orientation="VERTICAL" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ListManagerController">
+<SplitPane dividerPositions="0.5" orientation="VERTICAL" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ListManagerController">
    <items>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="675.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="611.0">
          <children>
-            <Button fx:id="addButton" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#addList" prefHeight="25.0" prefWidth="40.0" text="+" />
-            <TextField fx:id="titleTextField" layoutX="132.0" layoutY="8.0" prefHeight="25.0" prefWidth="528.0" promptText="Add list title here..." />
-            <Separator layoutX="115.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="7.0" />
-            <Button fx:id="removeButton" layoutX="68.0" layoutY="8.0" mnemonicParsing="false" onAction="#removeList" prefHeight="25.0" prefWidth="40.0" text="-" />
+            <Button fx:id="addButton" layoutX="11.0" layoutY="14.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#addItem" prefHeight="25.0" prefWidth="75.0" text="Add" />
+            <Button fx:id="removeButton" layoutX="97.0" layoutY="14.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#removeItem" prefHeight="25.0" prefWidth="75.0" text="Remove" />
+            <Button fx:id="clearButton" layoutX="180.0" layoutY="14.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#clearAll" prefHeight="25.0" prefWidth="75.0" text="Clear All" />
+            <Button fx:id="exportButton" layoutX="438.0" layoutY="14.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#exportList" prefHeight="25.0" prefWidth="75.0" text="Export" />
+            <Button fx:id="importButton" layoutX="522.0" layoutY="14.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#importList" prefHeight="25.0" prefWidth="75.0" text="Import" />
+            <Button fx:id="markCompleteButton" layoutX="12.0" layoutY="50.0" maxHeight="25.0" maxWidth="157.0" minHeight="25.0" minWidth="157.0" mnemonicParsing="false" onAction="#markComplete" prefHeight="25.0" prefWidth="157.0" text="Mark Complete" />
+            <Button fx:id="markIncompleteButton" layoutX="181.0" layoutY="49.0" maxHeight="25.0" maxWidth="157.0" minHeight="25.0" minWidth="157.0" mnemonicParsing="false" onAction="#markIncomplete" prefHeight="25.0" prefWidth="157.0" text="Mark Incomplete" />
+            <Button fx:id="displayCompletedButton" layoutX="12.0" layoutY="84.0" maxHeight="25.0" maxWidth="157.0" minHeight="25.0" minWidth="157.0" mnemonicParsing="false" onAction="#displayComplete" prefHeight="25.0" prefWidth="157.0" text="Display Completed" />
+            <Button fx:id="displayIncompletedButton" layoutX="181.0" layoutY="83.0" maxHeight="25.0" maxWidth="157.0" minHeight="25.0" minWidth="157.0" mnemonicParsing="false" onAction="#displayIncomplete" prefHeight="25.0" prefWidth="157.0" text="Display Incompleted" />
+            <Button fx:id="displayAllButton" layoutX="348.0" layoutY="83.0" maxHeight="25.0" maxWidth="157.0" minHeight="25.0" minWidth="157.0" mnemonicParsing="false" onAction="#displayAll" prefHeight="25.0" prefWidth="157.0" text="Display All" />
+            <DatePicker fx:id="datePicker" layoutX="11.0" layoutY="118.0" prefHeight="25.0" prefWidth="75.0" />
+            <TextField fx:id="descriptionTextField" layoutX="99.0" layoutY="118.0" prefHeight="25.0" prefWidth="500.0" promptText="Add item description here" />
+            <Button fx:id="updateButton" layoutX="265.0" layoutY="14.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#updateItem" prefHeight="25.0" prefWidth="75.0" text="Update" />
          </children>
       </AnchorPane>
-      <ListView fx:id="eventList" prefHeight="200.0" prefWidth="200.0" />
-      <MenuBar>
-        <menus>
-          <Menu mnemonicParsing="false" text="Export">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#exportList" text="Export List" />
-                  <MenuItem mnemonicParsing="false" onAction="#exportAllLists" text="Export ALL Lists" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Import">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#importList" text="Import List" />
-                  <MenuItem mnemonicParsing="false" onAction="#importAllList" text="Import Multiple Lists" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+      <ListView fx:id="itemList" onMouseClicked="#listViewSelectedItem" prefHeight="200.0" prefWidth="200.0" />
    </items>
 </SplitPane>

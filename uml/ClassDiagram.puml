@@ -7,43 +7,32 @@ class ListManager {
 }
 
 class ListManagerController {
-    ObservableList<Item>
+    ObservableList<Item> list
+    ObservableList<Item> completed
+    ObservableList<Item> incompleted
 
-    addList()
-    removeList()
-    handleRightClick()
-    exportList()
-    exportAllLists()
-    importList()
-    importAllLists()
-    renameList()
     addItem()
     removeItem()
-    editDueDate()
-    editDesc()
+    clearAll()
+    updateItem()
     markComplete()
-    displayIncomplete()
+    markIncomplete()
     displayComplete()
+    displayIncomplete()
+    exportList()
+    importList()
 }
-
 
 class Item {
-    task: String
-    dueDate: String
     desc: String
+    dueDate: String
     complete: boolean
-}
-
-class List {
-    title: String
-    list: List<Item>
 }
 
 javafx.Application <|-- ListManager
 
 ListManager - ListManagerController
-ListManagerController *--> List
+ListManagerController *--> Item
 
-List *-> Item
 
 @enduml
