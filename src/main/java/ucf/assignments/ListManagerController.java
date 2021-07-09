@@ -2,21 +2,25 @@ package ucf.assignments;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-import java.awt.*;
+import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class ListManagerController implements Initializable {
+
+    FileChooser fileChooser = new FileChooser();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         datePicker.setValue(LocalDate.now());
@@ -78,7 +82,8 @@ public class ListManagerController implements Initializable {
     @FXML
     private void addItem(Event e) {
         //  make a new item and add it to the observable list
-        list.add(new Item(descriptionTextField.getText(), datePicker.getValue()));
+        list.add(new Item(descriptionTextField.getText(), datePicker.getValue(), false));
+        System.out.println(datePicker.getValue());
         //  add the observable list to the list view
         itemList.setItems(list);
         refresh();
@@ -95,6 +100,7 @@ public class ListManagerController implements Initializable {
 
     @FXML
     private void clearAll(Event e) {
+        //  clear
         itemList.getItems().clear();
         refresh();
     }
@@ -118,15 +124,67 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    private void exportList(Event e) {
-        //  this can be used from the menu bar
-        //  open up a save as window and can save the file
+    void exportList(javafx.scene.input.MouseEvent mouseEvent) {
+        //  open up an open window and can select the file
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+        File file = fileChooser.showSaveDialog(new Stage());
+
+        if(file != null) {
+            try {
+                PrintWriter pw = new PrintWriter(file);
+                StringBuilder sb = new StringBuilder();
+
+                for(int i = 0; i < list.size(); i++) {
+                    sb.append(list.get(i).getDate());
+                    sb.append(",");
+                    sb.append(list.get(i).getDescription());
+                    sb.append(",");
+                    sb.append(list.get(i).getCompletedBoolean(list.get(i).getComplete()));
+                    sb.append("\r\n");
+                }
+                pw.write(sb.toString());
+                pw.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
-    private void importList(Event e) {
-        //  this can be used from the menu bar
+    void importList(javafx.scene.input.MouseEvent mouseEvent) {
+        String line = "";
+
         //  open up an open window and can select the file
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+        File file = fileChooser.showOpenDialog(new Stage());
+        itemList.getItems().clear();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            while((line = br.readLine()) != null) {
+                Boolean fromCSV;
+                String[] values = line.split(",");
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(values[0], formatter);
+
+                if(values[2].equals("incomplete")) {
+                    fromCSV = false;
+                } else {
+                    fromCSV = true;
+                }
+                list.add(new Item(values[1], date, fromCSV));
+
+                itemList.setItems(list);
+                refresh();
+            }
+
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     @FXML
@@ -181,4 +239,5 @@ public class ListManagerController implements Initializable {
         itemList.setItems(list);
         refresh();
     }
+
 }

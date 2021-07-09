@@ -1,5 +1,3 @@
-//  I HAVE NO CLUE WHAT IM DOING
-
 package ucf.assignments;
 
 import javafx.application.Application;

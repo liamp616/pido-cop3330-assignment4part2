@@ -8,18 +8,25 @@ public class Item {
     //  dueDate: String
     private LocalDate date;
     //  complete: boolean
-    private Boolean complete = false;
+    private Boolean complete;
 
     //  create constructor
-    public Item(String description, LocalDate date) {
+    public Item(String description, LocalDate date, Boolean complete) {
         this.description = description;
         this.date = date;
+        this.complete = complete;
     }
 
     @Override
     public String toString(){
+        String isComplete;
+        if(getComplete().equals(true)) {
+            isComplete = "completed";
+        } else {
+            isComplete = "incomplete";
+        }
         //  return this.getDate() + "\t" + this.getDescription()+ "\t\t\t" + complete;
-        return String.format(this.getDate() + "\t" + "%-140s\t" + this.getComplete(), description);
+        return (this.getDate() + "\t" + this.getDescription() + " - " + isComplete);
     }
 
     //  create getter and setter methods for variables
@@ -45,5 +52,16 @@ public class Item {
 
     public void setComplete(Boolean complete) {
         this.complete = complete;
+    }
+
+    public String getCompletedBoolean(Boolean complete) {
+        String temp;
+        if(getComplete().equals(true)) {
+            temp = "completed";
+        } else {
+            temp = "incomplete";
+        }
+
+        return temp;
     }
 }
