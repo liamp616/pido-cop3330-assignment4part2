@@ -73,24 +73,23 @@ public class ListManagerController implements Initializable {
     ObservableList<Item> list = FXCollections.observableArrayList();
 
     //  refreshes the date picker and the description text box
-    private void refresh() {
+    public void refresh() {
         datePicker.setValue(LocalDate.now());
         descriptionTextField.setText(null);
         itemList.refresh();
     }
 
     @FXML
-    private void addItem(Event e) {
+    public void addItem(Event e) {
         //  make a new item and add it to the observable list
         list.add(new Item(descriptionTextField.getText(), datePicker.getValue(), false));
-        System.out.println(datePicker.getValue());
         //  add the observable list to the list view
         itemList.setItems(list);
         refresh();
     }
 
     @FXML
-    private void removeItem(Event e) {
+    public void removeItem(Event e) {
         //  find the index of the selected item
         int index = itemList.getSelectionModel().getSelectedIndex();
         //  remove the index of the list
@@ -99,41 +98,50 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    private void clearAll(Event e) {
+    public void clearAll(Event e) {
         //  clear
         itemList.getItems().clear();
         refresh();
     }
 
     public void listViewSelectedItem() {
+        //  takes the description of the task that was clicked
         itemList.setOnMouseClicked(event -> {
             String selectedItem = itemList.getSelectionModel().getSelectedItem().getDescription();
+            //  takes the index of the task that was clicked
             int index = itemList.getSelectionModel().getSelectedIndex();
+            //  sets the description text field editor the task's description
             descriptionTextField.setText(selectedItem);
+            //  sets the date picker field to the task's due date
             datePicker.setValue(itemList.getItems().get(index).getDate());
         });
         refresh();
     }
 
     @FXML
-    private void updateItem(Event e) {
+    public void updateItem(Event e) {
+        //  takes the index of the task that was clicked
         int index = itemList.getSelectionModel().getSelectedIndex();
+        //  sets the new due date
         itemList.getItems().get(index).setDate(datePicker.getValue());
+        //  sets the new description
         itemList.getItems().get(index).setDescription(descriptionTextField.getText());
         refresh();
     }
 
     @FXML
-    void exportList(javafx.scene.input.MouseEvent mouseEvent) {
+    public void exportList(javafx.scene.input.MouseEvent mouseEvent) {
         //  open up an open window and can select the file
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
         File file = fileChooser.showSaveDialog(new Stage());
 
+        //  if the file is not empty, write the list's data into csv format
         if(file != null) {
             try {
                 PrintWriter pw = new PrintWriter(file);
                 StringBuilder sb = new StringBuilder();
 
+                //  separates the date, description, and incomplete/complete with commas for each line
                 for(int i = 0; i < list.size(); i++) {
                     sb.append(list.get(i).getDate());
                     sb.append(",");
@@ -151,7 +159,7 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    void importList(javafx.scene.input.MouseEvent mouseEvent) {
+    public void importList(javafx.scene.input.MouseEvent mouseEvent) {
         String line = "";
 
         //  open up an open window and can select the file
@@ -162,18 +170,22 @@ public class ListManagerController implements Initializable {
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
 
+            //  reads in the csv file
             while((line = br.readLine()) != null) {
                 Boolean fromCSV;
                 String[] values = line.split(",");
 
+                //  reads the date and imports and formats it into the datePicker
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate date = LocalDate.parse(values[0], formatter);
-
+                //  after the comma, then takes the description
+                //  it takes the boolean value if it is completed or not
                 if(values[2].equals("incomplete")) {
                     fromCSV = false;
                 } else {
                     fromCSV = true;
                 }
+                //  takes all of this data and adds new item
                 list.add(new Item(values[1], date, fromCSV));
 
                 itemList.setItems(list);
@@ -188,7 +200,7 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    private void markComplete(Event e) {
+    public void markComplete(Event e) {
         //  find the index of the selected item
         int index = itemList.getSelectionModel().getSelectedIndex();
         //  change the value of the boolean to true
@@ -196,7 +208,8 @@ public class ListManagerController implements Initializable {
         refresh();
     }
 
-    @FXML void markIncomplete(Event e) {
+    @FXML
+    public void markIncomplete(Event e) {
         //  find the index of the selected item
         int index = itemList.getSelectionModel().getSelectedIndex();
         //  change the value of the boolean to false
@@ -205,7 +218,7 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    private void displayComplete(Event e) {
+    public void displayComplete(Event e) {
         ObservableList<Item> complete = FXCollections.observableArrayList();
 
         //  find all items that have the complete boolean to true
@@ -220,7 +233,7 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    private void displayIncomplete(Event e) {
+    public void displayIncomplete(Event e) {
         ObservableList<Item> incomplete = FXCollections.observableArrayList();
 
         //  find all items that have the complete boolean to false
@@ -235,7 +248,7 @@ public class ListManagerController implements Initializable {
     }
 
     @FXML
-    private void displayAll(Event e) {
+    public void displayAll(Event e) {
         itemList.setItems(list);
         refresh();
     }

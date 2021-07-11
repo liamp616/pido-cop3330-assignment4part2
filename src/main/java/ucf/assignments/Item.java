@@ -25,7 +25,6 @@ public class Item {
         } else {
             isComplete = "incomplete";
         }
-        //  return this.getDate() + "\t" + this.getDescription()+ "\t\t\t" + complete;
         return (this.getDate() + "\t" + this.getDescription() + " - " + isComplete);
     }
 
